@@ -1,6 +1,7 @@
 package com.example.factura.service
 
 import com.example.factura.model.Client
+import com.example.factura.model.Product
 import com.example.factura.repository.ClientRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Example
@@ -26,6 +27,10 @@ class ClientService {
                 .withMatcher(("fullname"), ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
         return clientRepository.findAll(Example.of(client, matcher), pageable)
     }
+    fun listByAddress(value:String): List<Client> {
+        return clientRepository.filterAddress(value)
+    }
+
     fun save(client: Client): Client{
         try{
             client.fullname?.takeIf { it.trim().isNotEmpty() }

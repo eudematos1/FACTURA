@@ -1,6 +1,7 @@
 package com.example.factura.service
 
 import com.example.factura.model.Client
+import com.example.factura.model.Invoice
 import com.example.factura.model.Product
 import com.example.factura.repository.ClientRepository
 import com.example.factura.repository.ProductRepository
@@ -27,7 +28,9 @@ class ProductService {
                 .withMatcher(("description"), ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
         return productRepository.findAll(Example.of(product, matcher), pageable)
     }
-
+     fun listByStock(value:Long): List<Product> {
+         return productRepository.filterStock(value)
+     }
     fun save(product: Product): Product{
         try{
             return productRepository.save(product)

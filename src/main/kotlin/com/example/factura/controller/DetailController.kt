@@ -26,6 +26,10 @@ class DetailController {
     fun list ():List <Detail>{
         return detailService.list()
     }
+    @GetMapping("/filter-price/{value}")
+    fun listPrice (@PathVariable("value") value: Double ):ResponseEntity<*>{
+        return ResponseEntity(detailService.listByPrice(value), HttpStatus.OK)
+    }
     @PostMapping
     fun save (@RequestBody detail: Detail):ResponseEntity<Detail>{
         return ResponseEntity(detailService.save(detail), HttpStatus.OK)

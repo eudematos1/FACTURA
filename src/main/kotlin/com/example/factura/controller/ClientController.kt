@@ -32,6 +32,10 @@ class ClientController {
         val response= clientService.list(pageable,client)
         return ResponseEntity(response, HttpStatus.OK)
     }
+    @GetMapping("/filter-address/{value}")
+    fun listTotals (@PathVariable("value") value: String ):ResponseEntity<*>{
+        return ResponseEntity(clientService.listByAddress(value), HttpStatus.OK)
+    }
 
     @PostMapping
     fun save (@RequestBody client: Client):ResponseEntity<Client>{

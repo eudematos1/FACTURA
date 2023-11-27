@@ -32,6 +32,10 @@ class ProductController {
         val response= productService.list(pageable,product)
         return ResponseEntity(response, HttpStatus.OK)
     }
+    @GetMapping("/filter-stock/{value}")
+    fun listTotals (@PathVariable("value") value: Long ):ResponseEntity<*>{
+        return ResponseEntity(productService.listByStock(value), HttpStatus.OK)
+    }
 
     @PostMapping
     fun save (@RequestBody product: Product):ResponseEntity<Product>{

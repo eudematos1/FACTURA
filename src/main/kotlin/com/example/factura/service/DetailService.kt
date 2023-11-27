@@ -25,6 +25,9 @@ class DetailService {
     fun list ():List<Detail>{
         return detailRepository.findAll()
     }
+    fun listByPrice(value:Double): List<Detail> {
+        return detailRepository.filterPrice(value)
+    }
     fun save(detail: Detail): Detail{
         try{
 
