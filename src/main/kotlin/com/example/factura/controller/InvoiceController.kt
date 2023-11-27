@@ -26,6 +26,10 @@ class InvoiceController {
     fun list ():List <Invoice>{
         return invoiceService.list()
     }
+    @GetMapping("/filter-total/{value}")
+    fun listTotals (@PathVariable("value") value: Double ):ResponseEntity<*>{
+        return ResponseEntity(invoiceService.listByTotal(value), HttpStatus.OK)
+    }
     @PostMapping
     fun save (@RequestBody invoice: Invoice):ResponseEntity<Invoice>{
         return ResponseEntity(invoiceService.save(invoice), HttpStatus.OK)
@@ -48,4 +52,5 @@ class InvoiceController {
     fun delete (@PathVariable("id") id: Long):Boolean?{
         return invoiceService.delete(id)
     }
+
 }

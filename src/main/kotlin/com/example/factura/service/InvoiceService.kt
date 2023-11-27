@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
 
+
 @Service
 class InvoiceService {
     @Autowired
@@ -19,6 +20,9 @@ class InvoiceService {
 
     fun list ():List<Invoice>{
         return invoiceRepository.findAll()
+    }
+    fun listByTotal(value:Double): List<Invoice>{
+        return invoiceRepository.filterTotal(value)
     }
     fun save(invoice: Invoice): Invoice{
         try{
