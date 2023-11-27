@@ -1,10 +1,12 @@
 package com.example.factura.model
 
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import java.util.Date
 
@@ -19,4 +21,5 @@ class Invoice{
     var create_at: Date? = null   //address
     var total: Double? = null
     var client_id: Long? = null
+
 }

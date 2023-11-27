@@ -5,6 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
 import jakarta.persistence.Table
 
 @Entity
@@ -14,11 +15,13 @@ class Detail{
     @Id
     @Column(updatable = false)
     var id: Long? = null
-    var quantity: Long? = null   //description_one en la base de datos
-    var price: Double? = null   //address
-    @Column (name= "invoice_id")
-    var invoiceid: Long? = null
-    @Column (name= "product_id")
-    var productid: Long?= null
+    var quantity: Long? = null
+    var price: Double? = null
+
+    var invoice_id: Long? = null
+
+    var product_id: Long?= null
+
+
 }
 

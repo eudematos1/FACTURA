@@ -28,9 +28,9 @@ class DetailService {
     fun save(detail: Detail): Detail{
         try{
 
-            invoiceRepository.findById(detail.invoiceid)
+            invoiceRepository.findById(detail.invoice_id)
                     ?: throw Exception("Id invoice no encontrada")
-            productRepository.findById(detail.productid)
+            productRepository.findById(detail.product_id)
                     ?: throw Exception("Id product no encontrada")
             return detailRepository.save(detail)
         }
