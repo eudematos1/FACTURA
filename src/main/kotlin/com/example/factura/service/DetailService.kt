@@ -28,18 +28,43 @@ class DetailService {
     fun listByPrice(value:Double): List<Detail> {
         return detailRepository.filterPrice(value)
     }
-    fun save(detail: Detail): Detail{
-        try{
+    fun save(detail: Detail): Detail {
+        try {
+            val product = productRepository.findById(detail.productId)
+                    ?: throw Exception("Id del producto no encontrada")
 
-            invoiceRepository.findById(detail.invoice_id)
+            val invoicetoVP =invoiceRepository.findById(detail.invoiceId)
+
+            invoiceRepository.findById(detail.invoiceId)
                     ?: throw Exception("Id invoice no encontrada")
-            productRepository.findById(detail.product_id)
-                    ?: throw Exception("Id product no encontrada")
-            return detailRepository.save(detail)
+
+            detailRepository.findById(detail.id)
+                    ?: throw Exception("Id detail no encontrada")
+
+            val savedDetail = detailRepository.save(detail)
+            var sum = 0.0
+            val listinvoice = detailRepository.findByInvoiceId(detail.invoiceId)
+            listinvoice.map { items ->
+                sum += (detail.price!!.times(detail.quantity!!))
+
+            }
+
+
+            product.apply {
+                stock = stock?.minus(detail.quantity!!)
+            }
+            invoicetoVP?.apply {
+                total = sum
+            }
+            invoiceRepository.save(invoicetoVP!!)
+
+            productRepository.save(product)
+
+            return savedDetail
+        } catch (ex: Exception) {
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, ex.message)
         }
-        catch (ex:Exception){
-            throw ResponseStatusException(HttpStatus.NOT_FOUND,ex.message)
-        }
+
     }
     fun update(detail: Detail): Detail{
         try {

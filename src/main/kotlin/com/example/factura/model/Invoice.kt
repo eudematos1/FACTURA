@@ -20,6 +20,7 @@ class Invoice{
     var code: String? = null   //description_one en la base de datos
     var create_at: Date? = null   //address
     var total: Double? = null
-    var client_id: Long? = null
+    @Column(name="client_id")
+    var clientId: Long? = null
 
 }
