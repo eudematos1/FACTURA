@@ -22,18 +22,24 @@ class DetailService {
     @Autowired
     lateinit var productRepository: ProductRepository
 
-    fun list ():List<Detail>{
+    fun list(): List<Detail> {
         return detailRepository.findAll()
     }
-    fun listByPrice(value:Double): List<Detail> {
+    fun listById (id:Long?):Detail?{
+        return detailRepository.findById(id)
+    }
+
+    fun listByPrice(value: Double): List<Detail> {
         return detailRepository.filterPrice(value)
     }
+
+
     fun save(detail: Detail): Detail {
         try {
             val product = productRepository.findById(detail.productId)
                     ?: throw Exception("Id del producto no encontrada")
 
-            val invoicetoVP =invoiceRepository.findById(detail.invoiceId)
+            val invoicetoVP = invoiceRepository.findById(detail.invoiceId)
 
             invoiceRepository.findById(detail.invoiceId)
                     ?: throw Exception("Id invoice no encontrada")
@@ -66,46 +72,49 @@ class DetailService {
         }
 
     }
-    fun update(detail: Detail): Detail{
+
+    fun update(detail: Detail): Detail {
         try {
             detailRepository.findById(detail.id)
                     ?: throw Exception("ID no existe")
 
             return detailRepository.save(detail)
-        }
-        catch (ex:Exception){
-            throw ResponseStatusException(HttpStatus.NOT_FOUND,ex.message)
+        } catch (ex: Exception) {
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, ex.message)
         }
     }
-    fun updateName(detail: Detail): Detail{
-        try{
+
+    fun updateName(detail: Detail): Detail {
+        try {
             val response = detailRepository.findById(detail.id)
                     ?: throw Exception("ID no existe")
             response.apply {
-                quantity=detail.quantity //un atributo del modelo
+                quantity = detail.quantity //un atributo del modelo
             }
             return detailRepository.save(response)
-        }
-        catch (ex:Exception){
-            throw ResponseStatusException(HttpStatus.NOT_FOUND,ex.message)
+        } catch (ex: Exception) {
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, ex.message)
         }
     }
 
-    fun listById (id:Long?):Detail?{
-        return detailRepository.findById(id)
-    }
+    fun delete(id: Long?): Boolean {
+        try {
+            val detail = detailRepository.findById(id)
+                    ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "ID no existe")
 
-    fun delete (id: Long?):Boolean?{
-        try{
-            val response = detailRepository.findById(id)
-                    ?: throw Exception("ID no existe")
+            val product = productRepository.findById(detail.productId)
+            product?.apply {
+                stock = stock?.plus(detail.quantity!!)
+            }
+            productRepository.save(product!!)
+
             detailRepository.deleteById(id!!)
+
             return true
+        } catch (ex: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al eliminar el detalle", ex)
         }
-        catch (ex:Exception){
-            throw ResponseStatusException(HttpStatus.NOT_FOUND,ex.message)
-        }
+
+
     }
-
-
 }
