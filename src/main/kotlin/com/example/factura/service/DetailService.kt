@@ -89,7 +89,7 @@ class DetailService {
             val response = detailRepository.findById(detail.id)
                     ?: throw Exception("ID no existe")
             response.apply {
-                quantity = detail.quantity //un atributo del modelo
+                quantity = detail.quantity
             }
             return detailRepository.save(response)
         } catch (ex: Exception) {

@@ -30,3 +30,4 @@ create table if not exists DETAIL(
     FOREIGN KEY (PRODUCT_id) REFERENCES PRODUCT(id)
 
     );
+
