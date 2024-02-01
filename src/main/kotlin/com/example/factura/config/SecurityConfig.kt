@@ -33,6 +33,8 @@ class SecurityConfig {
                             .requestMatchers("/auth/**").permitAll()
                             .requestMatchers(HttpMethod.GET,"/product/**").hasAnyRole("admin")
                             .requestMatchers(HttpMethod.GET,"/invoice/**").hasAnyRole("admin","assistant")
+                            .requestMatchers(HttpMethod.GET,"/detail/**").hasAnyRole("assistant")
+                            .requestMatchers(HttpMethod.GET,"/client/**").hasAnyRole("admin")
                             .anyRequest().denyAll()
 
 
